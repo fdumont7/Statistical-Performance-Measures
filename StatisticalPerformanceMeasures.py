@@ -1,8 +1,10 @@
 #Author: Faryn Dumont
-#Formulas from 'Hydrologic and Water Quality Models: Performance Measures and Evaluation Criteria' by D. N. Moriasi, M. W. Gitau, N. Pai, P. Daggupati
+#Formulas based from table 5 in 'Hydrologic and Water Quality Models: Performance Measures and Evaluation Criteria' by D. N. Moriasi, M. W. Gitau, N. Pai, P. Daggupati
 
 import xlrd #whats used to read excel document.
 import math
+
+#TODO add option to find calculations by individual sheets. or just show individual sheets and full calculations
 
 class StatisticalPerformanceMeasures:
 
@@ -11,7 +13,6 @@ class StatisticalPerformanceMeasures:
 			try:
 				myFile = input("What file would you like to open (please put in full location)\n")
 				workBook = xlrd.open_workbook(myFile)
-				
 				break
 			except OSError:
 				print("invalid file name please try again")
