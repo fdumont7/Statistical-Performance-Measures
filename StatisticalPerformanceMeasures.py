@@ -4,7 +4,7 @@
 import xlrd #whats used to read excel document.
 import math
 
-#TODO add option to find calculations by individual sheets. or just show individual sheets and full calculations
+#TODO find way to skip non-visible sheets when printing calculations
 
 class StatisticalPerformanceMeasures:
 
@@ -18,26 +18,55 @@ class StatisticalPerformanceMeasures:
 				print("invalid file name please try again")
 		#on_demand is used to avoid loading worksheet data into memory
 		self.workBook = xlrd.open_workbook(myFile, on_demand = True)
-	
-	def getObservedOutflow(self):
+
+	def getNumSheets(self):
+		numOfVisibleSheets = 0
+		for i in range(self.workBook.nsheets):
+			if self.workBook.sheet_by_index(i).visibility == 0:
+				numOfVisibleSheets = numOfVisibleSheets + 1
+		return numOfVisibleSheets
+
+	def getObservedOutflowAll(self):
 		OO = []
 		for i in range(len(self.workBook.sheet_names())):
-			OO.extend(self.workBook.sheet_by_index(i).col_values(1)[1:])
+			if self.workBook.sheet_by_index(i).visibility == 0:
+				OO.extend(self.workBook.sheet_by_index(i).col_values(1)[1:])
 		while('' in OO):
 			OO.remove('')
 		return OO
 		
-	def getSimulatedOutflow(self):
+	def getSimulatedOutflowAll(self):
 		SO = []
 		for i in range(len(self.workBook.sheet_names())):
-			SO.extend(self.workBook.sheet_by_index(i).col_values(4)[1:])
+			if self.workBook.sheet_by_index(i).visibility == 0:
+				SO.extend(self.workBook.sheet_by_index(i).col_values(4)[1:])
 		while('' in SO):
 			SO.remove('')
 		return SO
 
-	def calculateNSE(self):
-		OO = self.getObservedOutflow()
-		SO = self.getSimulatedOutflow()
+	#returns 2d list with the list containing individual lists for each sheet
+	def getSimulatedOutflowIndividual(self):
+		OO = []
+		for i in range(len(self.workBook.sheet_names())-1):
+			if self.workBook.sheet_by_index(i).visibility == 0:
+				OO.append(self.workBook.sheet_by_index(i).col_values(1)[1:])
+			while ('' in OO[i]):
+				OO[i].remove('')
+		return OO
+
+	# returns 2d list with the list containing individual lists for each sheet
+	def getSimulatedOutflowIndividual(self):
+		SO = []
+		for i in range(len(self.workBook.sheet_names())):
+			if self.workBook.sheet_by_index(i).visibility == 0:
+				SO.append(self.workBook.sheet_by_index(i).col_values(4)[1:])
+			while ('' in SO):
+				SO.remove('')
+		return SO
+
+	def calculateNSE(self, observedOutflow, simulatedOutflow):
+		OO = observedOutflow
+		SO = simulatedOutflow
 		meanOO = sum(OO)/len(OO)
 		top = 0.0
 		bottom = 0.0
@@ -46,18 +75,18 @@ class StatisticalPerformanceMeasures:
 			bottom = bottom + (OO[i]-meanOO)**2
 		return 1-top/bottom
 
-	def calculatePBIAS(self):
-		OO = self.getObservedOutflow()
-		SO = self.getSimulatedOutflow()
+	def calculatePBIAS(self,observedOutflow, simulatedOutflow):
+		OO = observedOutflow
+		SO = simulatedOutflow
 		top = 0.0
 		bottom = sum(OO)
 		for i in range(len(OO)):
 			top = top + (OO[i]-SO[i])
 		return (top/bottom)*100
 
-	def calculateRSR(self):
-		OO = self.getObservedOutflow()
-		SO = self.getSimulatedOutflow()
+	def calculateRSR(self, observedOutflow, simulatedOutflow):
+		OO = observedOutflow
+		SO = simulatedOutflow
 		meanSO = sum(SO)/len(SO)
 		top = 0.0
 		bottom = 0.0
@@ -66,9 +95,9 @@ class StatisticalPerformanceMeasures:
 			bottom = bottom + (OO[i]-meanSO)**2
 		return math.sqrt(top)/math.sqrt(bottom)
 
-	def calculate_d(self):
-		OO = self.getObservedOutflow()
-		SO = self.getSimulatedOutflow()
+	def calculate_d(self, observedOutflow, simulatedOutflow):
+		OO = observedOutflow
+		SO = simulatedOutflow
 		meanOO = sum(OO)/len(OO)
 		top = 0.0
 		bottom = 0.0
