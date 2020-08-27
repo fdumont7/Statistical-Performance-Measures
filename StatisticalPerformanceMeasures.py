@@ -4,7 +4,6 @@
 import xlrd #whats used to read excel document.
 import math
 
-#TODO find way to skip non-visible sheets when printing calculations
 
 class StatisticalPerformanceMeasures:
 
