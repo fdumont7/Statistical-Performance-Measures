@@ -26,6 +26,7 @@ class StatisticalPerformanceMeasures:
 				numOfVisibleSheets = numOfVisibleSheets + 1
 		return numOfVisibleSheets
 
+	#returns 1d list with the list containing all data from all sheets
 	def getObservedOutflowAll(self):
 		OO = []
 		for i in range(len(self.workBook.sheet_names())):
@@ -34,7 +35,8 @@ class StatisticalPerformanceMeasures:
 		while('' in OO):
 			OO.remove('')
 		return OO
-		
+
+	#returns 1d list with the list containing all data from all sheets 
 	def getSimulatedOutflowAll(self):
 		SO = []
 		for i in range(len(self.workBook.sheet_names())):
@@ -45,13 +47,13 @@ class StatisticalPerformanceMeasures:
 		return SO
 
 	#returns 2d list with the list containing individual lists for each sheet
-	def getSimulatedOutflowIndividual(self):
+	def getObservedOutflowIndividual(self):
 		OO = []
-		for i in range(len(self.workBook.sheet_names())-1):
+		for i in range(len(self.workBook.sheet_names())):
 			if self.workBook.sheet_by_index(i).visibility == 0:
 				OO.append(self.workBook.sheet_by_index(i).col_values(1)[1:])
-			while ('' in OO[i]):
-				OO[i].remove('')
+				while ('' in OO[i]):
+					OO[i].remove('')			
 		return OO
 
 	# returns 2d list with the list containing individual lists for each sheet
