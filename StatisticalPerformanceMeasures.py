@@ -121,8 +121,18 @@ class StatisticalPerformanceMeasures:
 		return (1/len(OO))*num
 
 	#can't figure out what equation means. it has Oi and Pi but no sum, or definition of i
-	def calculateRE(self, observedOutflow, simulatedOutflow):
-		return "not calculated"
+	def calculateMeanRE(self, observedOutflow, simulatedOutflow):
+		OO = observedOutflow
+		SO = simulatedOutflow
+		RE = []
+		for i in range(len(OO)):
+			if OO[i] != 0:
+				num = 100 * abs((OO[i]-SO[i]/OO[i]))
+				RE.append(num)
+		return sum(RE)/len(RE)		
+
+	#def calculateMeanRE(self,observedOutflow, simulatedOutflow):
+
 
 	def calculateRSR(self, observedOutflow, simulatedOutflow):
 		OO = observedOutflow
