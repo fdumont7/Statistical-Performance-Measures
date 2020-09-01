@@ -3,6 +3,7 @@
 
 import xlrd #whats used to read excel document.
 import math
+import sys
 
 
 class StatisticalPerformanceMeasures:
@@ -25,15 +26,42 @@ class StatisticalPerformanceMeasures:
 				numOfVisibleSheets = numOfVisibleSheets + 1
 		return numOfVisibleSheets
 
+	
+		#while myHeader != header:
+			#myHeader = self.workBook.sheet_by_index(0).col_values(1)[0]
 	#returns 1d list with the list containing all data from all sheets
-	def getObservedOutflowAll(self):
-		OO = []
-		for i in range(self.workBook.nsheets):
-			if self.workBook.sheet_by_index(i).visibility == 0:
-				OO.extend(self.workBook.sheet_by_index(i).col_values(1)[1:])
+	def getObservedOutflowAll(self, header = "h"):
+		if header == "h":
+			OO = []
+			for i in range(self.workBook.nsheets):
+				if self.workBook.sheet_by_index(i).visibility == 0:
+					OO.extend(self.workBook.sheet_by_index(i).col_values(1)[1:])	
+		else:
+			OO = []
+			myHeader = "none"
+			#self.workBook.sheet_by_index(0).col_values(1)[0]
+			num = 1
+			print(num, "myHeader =", myHeader)
+
+			for i in range(self.workBook.nsheets):
+				num = 1
+				if self.workBook.sheet_by_index(i).visibility == 0:
+					while myHeader != header or num >= 20:
+						print(num)
+						myHeader = self.workBook.sheet_by_index(i).col_values(num)[0]
+						num = num + 1
+						print(num, "myHeader =", myHeader)
+					if num >= 20:
+						sys.exit("invalid Workbook. Please check sheet", i+1, " to make sure there is observed outflow data")
+					OO.extend(self.workBook.sheet_by_index(i).col_values(num+2)[1:])
+					print(num, "sheet", i, ":", self.workBook.sheet_by_index(i).col_values(num+2)[1:])
+					myHeader = "none"
 		while('' in OO):
 			OO.remove('')
 		return OO
+
+
+
 
 	#returns 1d list with the list containing all data from all sheets 
 	def getSimulatedOutflowAll(self):

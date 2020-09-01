@@ -1,11 +1,11 @@
 from StatisticalPerformanceMeasures import StatisticalPerformanceMeasures
 
-
+OOtitle = "Observed Outflow (GPM)"
 SPM = StatisticalPerformanceMeasures()
 option = 0
 OOI = SPM.getObservedOutflowIndividual()
 SOI = SPM.getSimulatedOutflowIndividual()
-OOA = SPM.getObservedOutflowAll()
+OOA = SPM.getObservedOutflowAll(OOtitle)
 SOA = SPM.getSimulatedOutflowAll()
 while option == 0:
 	option = int(input("Please choose an option\n1 - Get individual sheet calculations\n2 - Get combined sheet calculations\n3 - Get both options\nOption:"))
