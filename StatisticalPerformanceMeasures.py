@@ -132,7 +132,7 @@ class StatisticalPerformanceMeasures:
 				RE.append(num)
 		print(RE)
 		return RE
-	#can't figure out what equation means. it has Oi and Pi but no sum, or definition of i
+	
 	def calculateMeanRE(self, observedOutflow, simulatedOutflow):
 		RE = self.getRE(observedOutflow, simulatedOutflow)
 		return sum(RE)/len(RE)		
