@@ -130,7 +130,6 @@ class StatisticalPerformanceMeasures:
 			if OO[i] != 0:
 				num = 100 * abs((OO[i]-SO[i]/OO[i]))
 				RE.append(num)
-		print(RE)
 		return RE
 	
 	def calculateMeanRE(self, observedOutflow, simulatedOutflow):
