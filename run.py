@@ -23,6 +23,7 @@ if option == 1:
 			"\nRMSE = ", SPM.calculateRMSE(OOI[i], SOI[i]),
 			"\nMAE = ", SPM.calculateMAE(OOI[i], SOI[i]),
 			"\nMean RE = ", SPM.calculateMeanRE(OOI[i], SOI[i]),
+			"\nMedian RE =", SPM.calculateMedianRE(OOI[i], SOI[i]),
 			"\nRSR =", SPM.calculateRSR(OOI[i], SOI[i]),
 			"\nPBIAS =", SPM.calculatePBIAS(OOI[i], SOI[i]),
 			"\nSS = ", SPM.calculateSS(OOI[i], SOI[i]))
@@ -37,6 +38,7 @@ elif option == 2:
 			"\nRMSE = ", SPM.calculateRMSE(OOA, SOA),
 			"\nMAE = ", SPM.calculateMAE(OOA, SOA),
 			"\nMean RE = ", SPM.calculateMeanRE(OOA, SOA),
+			"\nMedian RE =", SPM.calculateMedianRE(OOA, SOA),
 			"\nRSR =", SPM.calculateRSR(OOA, SOA),
 			"\nPBIAS =", SPM.calculatePBIAS(OOA, SOA),
 			"\nSS = ", SPM.calculateSS(OOA, SOA))
@@ -51,6 +53,7 @@ elif option == 3:
 			"\nRMSE = ", SPM.calculateRMSE(OOI[i], SOI[i]),
 			"\nMAE = ", SPM.calculateMAE(OOI[i], SOI[i]),
 			"\nMean RE = ", SPM.calculateMeanRE(OOI[i], SOI[i]),
+			"\nMedian RE =", SPM.calculateMedianRE(OOI[i], SOI[i]),
 			"\nRSR =", SPM.calculateRSR(OOI[i], SOI[i]),
 			"\nPBIAS =", SPM.calculatePBIAS(OOI[i], SOI[i]),
 			"\nSS = ", SPM.calculateSS(OOI[i], SOI[i]))
@@ -62,6 +65,7 @@ elif option == 3:
 			"\nRMSE = ", SPM.calculateRMSE(OOA, SOA),
 			"\nMAE = ", SPM.calculateMAE(OOA, SOA),
 			"\nMean RE = ", SPM.calculateMeanRE(OOA, SOA),
+			"\nMedian RE =", SPM.calculateMedianRE(OOA, SOA),
 			"\nRSR =", SPM.calculateRSR(OOA, SOA),
 			"\nPBIAS =", SPM.calculatePBIAS(OOA, SOA),
 			"\nSS = ", SPM.calculateSS(OOA, SOA))

@@ -3,6 +3,7 @@
 
 import xlrd #whats used to read excel document.
 import math
+import statistics
 
 
 class StatisticalPerformanceMeasures:
@@ -81,6 +82,7 @@ class StatisticalPerformanceMeasures:
 
 	def calculateR2(self, observedOutflow, simulatedOutflow):
 		return self.calculate_r(observedOutflow, simulatedOutflow)**2
+
 		
 	def calculateNSE(self, observedOutflow, simulatedOutflow):
 		OO = observedOutflow
@@ -120,8 +122,7 @@ class StatisticalPerformanceMeasures:
 			num = num + abs(OO[i]-SO[i])
 		return (1/len(OO))*num
 
-	#can't figure out what equation means. it has Oi and Pi but no sum, or definition of i
-	def calculateMeanRE(self, observedOutflow, simulatedOutflow):
+	def getRE(self, observedOutflow, simulatedOutflow):
 		OO = observedOutflow
 		SO = simulatedOutflow
 		RE = []
@@ -129,9 +130,16 @@ class StatisticalPerformanceMeasures:
 			if OO[i] != 0:
 				num = 100 * abs((OO[i]-SO[i]/OO[i]))
 				RE.append(num)
+		print(RE)
+		return RE
+	#can't figure out what equation means. it has Oi and Pi but no sum, or definition of i
+	def calculateMeanRE(self, observedOutflow, simulatedOutflow):
+		RE = self.getRE(observedOutflow, simulatedOutflow)
 		return sum(RE)/len(RE)		
 
-	#def calculateMeanRE(self,observedOutflow, simulatedOutflow):
+	def calculateMedianRE(self,observedOutflow, simulatedOutflow):
+		RE = self.getRE(observedOutflow, simulatedOutflow)
+		return statistics.median(RE)
 
 
 	def calculateRSR(self, observedOutflow, simulatedOutflow):
