@@ -25,79 +25,69 @@ class StatisticalPerformanceMeasures:
 			if self.workBook.sheet_by_index(i).visibility == 0:
 				numOfVisibleSheets = numOfVisibleSheets + 1
 		return numOfVisibleSheets
-
 	
-		#while myHeader != header:
-			#myHeader = self.workBook.sheet_by_index(0).col_values(1)[0]
-	#returns 1d list with the list containing all data from all sheets
-	def getObservedOutflowAll(self, header = "h"):
+	#returns a 1d list with  the list containing all data from all sheets. header determines if its observered or simulated
+	def getOutflowAll(self, header = "h"):
 		if header == "h":
-			OO = []
+			Outflow = []
 			for i in range(self.workBook.nsheets):
 				if self.workBook.sheet_by_index(i).visibility == 0:
 					OO.extend(self.workBook.sheet_by_index(i).col_values(1)[1:])	
 		else:
-			OO = []
+			print("header =", header)
+			Outflow = []
 			myHeader = "none"
-			#self.workBook.sheet_by_index(0).col_values(1)[0]
 			num = 1
-			print(num, "myHeader =", myHeader)
-
 			for i in range(self.workBook.nsheets):
 				num = 1
 				if self.workBook.sheet_by_index(i).visibility == 0:
-					while myHeader != header or num >= 20:
-						print(num)
+					print (self.workBook.sheet_by_index(i).ncols)
+					while myHeader.strip() != header.strip() and num < self.workBook.sheet_by_index(i).ncols:						
 						myHeader = self.workBook.sheet_by_index(i).col_values(num)[0]
 						num = num + 1
-						print(num, "myHeader =", myHeader)
-					if num >= 20:
-						sys.exit("invalid Workbook. Please check sheet", i+1, " to make sure there is observed outflow data")
-					OO.extend(self.workBook.sheet_by_index(i).col_values(num+2)[1:])
-					print(num, "sheet", i, ":", self.workBook.sheet_by_index(i).col_values(num+2)[1:])
+					if num >= self.workBook.sheet_by_index(i).ncols:
+						statement = "invalid Workbook. Please check sheet "+ str(i+1) + " to make sure there is outflow data"
+						sys.exit(statement)
+					Outflow.extend(self.workBook.sheet_by_index(i).col_values(num-1)[1:])
 					myHeader = "none"
-		while('' in OO):
-			OO.remove('')
-		return OO
+		while('' in Outflow):
+			Outflow.remove('')
+		print(Outflow)
+		return Outflow
 
-
-
-
-	#returns 1d list with the list containing all data from all sheets 
-	def getSimulatedOutflowAll(self):
-		SO = []
-		for i in range(self.workBook.nsheets):
-			if self.workBook.sheet_by_index(i).visibility == 0:
-				SO.extend(self.workBook.sheet_by_index(i).col_values(4)[1:])
-		while('' in SO):
-			SO.remove('')
-		return SO
-
-	#returns 2d list with the list containing individual lists for each sheet
-	def getObservedOutflowIndividual(self):
-		OO = []
-		for i in range(self.workBook.nsheets):
-			if self.workBook.sheet_by_index(i).visibility == 0:
-				OO.append(self.workBook.sheet_by_index(i).col_values(1)[1:])
-				while ('' in OO[i]):
-					OO[i].remove('')			
-		return OO
-
-	# returns 2d list with the list containing individual lists for each sheet
-	def getSimulatedOutflowIndividual(self):
-		SO = []
-		for i in range(self.workBook.nsheets):
-			if self.workBook.sheet_by_index(i).visibility == 0:
-				SO.append(self.workBook.sheet_by_index(i).col_values(4)[1:])
-			while ('' in SO):
-				SO.remove('')
-		return SO
+	#returns a 2d list with individual sheets outflow. header determines if its observered or simulated
+	def getOutflowIndividual(self, header = "h"):
+		if header == "h":
+			Outflow = []
+			for i in range(self.workBook.nsheets):
+				if self.workBook.sheet_by_index(i).visibility == 0:
+					OO.extend(self.workBook.sheet_by_index(i).col_values(1)[1:])	
+		else:
+			print("header =", header)
+			Outflow = []
+			myHeader = "none"
+			num = 1
+			for i in range(self.workBook.nsheets):
+				num = 1
+				if self.workBook.sheet_by_index(i).visibility == 0:
+					print (self.workBook.sheet_by_index(i).ncols)
+					while myHeader.strip() != header.strip() and num < self.workBook.sheet_by_index(i).ncols:						
+						myHeader = self.workBook.sheet_by_index(i).col_values(num)[0]
+						num = num + 1
+					if num >= self.workBook.sheet_by_index(i).ncols:
+						statement = "invalid Workbook. Please check sheet "+ str(i+1) + " to make sure there is outflow data"
+						sys.exit(statement)
+					Outflow.append(self.workBook.sheet_by_index(i).col_values(num-1)[1:])
+					myHeader = "none"
+		while('' in Outflow):
+			Outflow.remove('')
+		return Outflow
 
 	def calculate_r(self, observedOutflow, simulatedOutflow):
 		OO = observedOutflow
 		SO = simulatedOutflow
 		meanOO = sum(OO)/len(OO)
-		meanSO = sum(OO)/len(OO)
+		meanSO = sum(SO)/len(SO)
 		top = 0.0
 		bottomLeft = 0.0
 		bottomRight = 0.0
