@@ -26,7 +26,7 @@ class StatisticalPerformanceMeasures:
 				numOfVisibleSheets = numOfVisibleSheets + 1
 		return numOfVisibleSheets
 	
-	#returns a 1d list with  the list containing all data from all sheets. header determines if its observered or simulated
+	#returns a 1-D list with  the list containing all data from all sheets. Header determines if its observed or simulated.
 	def getOutflowAll(self, header = "h"):
 		if header == "h":
 			Outflow = []
@@ -34,14 +34,12 @@ class StatisticalPerformanceMeasures:
 				if self.workBook.sheet_by_index(i).visibility == 0:
 					OO.extend(self.workBook.sheet_by_index(i).col_values(1)[1:])	
 		else:
-			print("header =", header)
 			Outflow = []
 			myHeader = "none"
 			num = 1
 			for i in range(self.workBook.nsheets):
 				num = 1
 				if self.workBook.sheet_by_index(i).visibility == 0:
-					print (self.workBook.sheet_by_index(i).ncols)
 					while myHeader.strip() != header.strip() and num < self.workBook.sheet_by_index(i).ncols:						
 						myHeader = self.workBook.sheet_by_index(i).col_values(num)[0]
 						num = num + 1
@@ -52,10 +50,9 @@ class StatisticalPerformanceMeasures:
 					myHeader = "none"
 		while('' in Outflow):
 			Outflow.remove('')
-		print(Outflow)
 		return Outflow
 
-	#returns a 2d list with individual sheets outflow. header determines if its observered or simulated
+	#returns a 2-D list with individual sheets outflow. header determines if its observed or simulated
 	def getOutflowIndividual(self, header = "h"):
 		if header == "h":
 			Outflow = []
@@ -63,14 +60,12 @@ class StatisticalPerformanceMeasures:
 				if self.workBook.sheet_by_index(i).visibility == 0:
 					OO.extend(self.workBook.sheet_by_index(i).col_values(1)[1:])	
 		else:
-			print("header =", header)
 			Outflow = []
 			myHeader = "none"
 			num = 1
 			for i in range(self.workBook.nsheets):
 				num = 1
 				if self.workBook.sheet_by_index(i).visibility == 0:
-					print (self.workBook.sheet_by_index(i).ncols)
 					while myHeader.strip() != header.strip() and num < self.workBook.sheet_by_index(i).ncols:						
 						myHeader = self.workBook.sheet_by_index(i).col_values(num)[0]
 						num = num + 1
@@ -95,9 +90,14 @@ class StatisticalPerformanceMeasures:
 			top = top + ((OO[i] - meanOO)*(SO[i] - meanSO))
 			bottomLeft = bottomLeft + (OO[i] - meanOO)**2
 			bottomRight = bottomRight + (SO[i] - meanSO)**2
+		if bottomRight == 0 or bottomLeft == 0:
+			return "divide by zero error"
 		return top/(math.sqrt(bottomLeft)*math.sqrt(bottomRight))
 
 	def calculateR2(self, observedOutflow, simulatedOutflow):
+		r = self.calculate_r(observedOutflow, simulatedOutflow)
+		if type(r) == str:
+			return r
 		return self.calculate_r(observedOutflow, simulatedOutflow)**2
 
 		
@@ -110,6 +110,8 @@ class StatisticalPerformanceMeasures:
 		for i in range(len(OO)):
 			top =top + (OO[i]-SO[i])**2
 			bottom = bottom + (OO[i]-meanOO)**2
+		if bottom == 0:
+			return "divide by zero error"
 		return 1-top/bottom
 
 	def calculate_d(self, observedOutflow, simulatedOutflow):
@@ -121,6 +123,8 @@ class StatisticalPerformanceMeasures:
 		for i in range(len(OO)):
 			top =top + (OO[i]-SO[i])**2
 			bottom = bottom + (abs(SO[i]-meanOO)+abs(OO[i]-meanOO))**2
+		if bottom == 0:
+			return "divide by zero error"
 		return 1-top/bottom
 
 	def calculateRMSE(self, observedOutflow, simulatedOutflow):
@@ -151,10 +155,14 @@ class StatisticalPerformanceMeasures:
 	
 	def calculateMeanRE(self, observedOutflow, simulatedOutflow):
 		RE = self.getRE(observedOutflow, simulatedOutflow)
+		if len(RE) == 0:
+			return 0.0
 		return sum(RE)/len(RE)		
 
 	def calculateMedianRE(self,observedOutflow, simulatedOutflow):
 		RE = self.getRE(observedOutflow, simulatedOutflow)
+		if len(RE) == 0:
+			return 0.0
 		return statistics.median(RE)
 
 
@@ -167,6 +175,8 @@ class StatisticalPerformanceMeasures:
 		for i in range(len(OO)):
 			top =top + (OO[i]-SO[i])**2
 			bottom = bottom + (OO[i]-meanSO)**2
+		if bottom == 0:
+			return "divide by zero error"
 		return math.sqrt(top)/math.sqrt(bottom)
 
 	def calculatePBIAS(self,observedOutflow, simulatedOutflow):
@@ -176,6 +186,8 @@ class StatisticalPerformanceMeasures:
 		bottom = sum(OO)
 		for i in range(len(OO)):
 			top = top + (OO[i]-SO[i])
+		if bottom == 0:
+			return "divide by zero error"
 		return (top/bottom)*100
 
 	def calculateSS(self, observedOutflow, simulatedOutflow):
@@ -187,6 +199,8 @@ class StatisticalPerformanceMeasures:
 		for i in range(len(OO)):
 			top = top + (SO[i]-OO[i])**2
 			bottom = bottom + (meanOO - OO[i])**2
+		if bottom == 0:
+			return "divide by zero error"
 		return 1 - top/bottom
 
 
