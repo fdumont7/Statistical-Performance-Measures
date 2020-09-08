@@ -33,8 +33,6 @@ if option == 1:
 			"\nRSR =", SPM.calculateRSR(OOI[i], SOI[i]),
 			"\nPBIAS =", SPM.calculatePBIAS(OOI[i], SOI[i]),
 			"\nSS = ", SPM.calculateSS(OOI[i], SOI[i]))
-		#if SPM.calculateSS(OOI[i], SOI[i]) == SPM.calculateNSE(OOI[i], SOI[i]):
-			#print("\nSS is the same as NSE")
 			
 elif option == 2:
 	print("\nr =", SPM.calculate_r(OOA, SOA),
