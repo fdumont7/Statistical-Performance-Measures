@@ -8,9 +8,13 @@ OOI = SPM.getOutflowIndividual(OOtitle)
 SOI = SPM.getOutflowIndividual(SOtitle)
 OOA = SPM.getOutflowAll(OOtitle)
 SOA = SPM.getOutflowAll(SOtitle)
-
 while option == 0:
-	option = int(input("Please choose an option\n1 - Get individual sheet calculations\n2 - Get combined sheet calculations\n3 - Get both options\nOption:"))
+	while True:
+				try:
+					option = int(input("Please choose an option\n1 - Get individual sheet calculations\n2 - Get combined sheet calculations\n3 - Get both options\nOption:"))
+					break
+				except ValueError:
+					print("Invalid input please try again")
 	if option <= 0 or option > 3:
 		option = 0
 		print("invalid option")
