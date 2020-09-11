@@ -43,7 +43,7 @@ class StatisticalPerformanceMeasures:
 					while myHeader.strip() != header.strip() and num < self.workBook.sheet_by_index(i).ncols:						
 						myHeader = self.workBook.sheet_by_index(i).col_values(num)[0]
 						num = num + 1
-					if num >= self.workBook.sheet_by_index(i).ncols:
+					if num > self.workBook.sheet_by_index(i).ncols:
 						statement = "invalid Workbook. Please check sheet "+ str(i+1) + " to make sure there is outflow data"
 						sys.exit(statement)
 					Outflow.extend(self.workBook.sheet_by_index(i).col_values(num-1)[1:])
@@ -66,10 +66,10 @@ class StatisticalPerformanceMeasures:
 			for i in range(self.workBook.nsheets):
 				num = 1
 				if self.workBook.sheet_by_index(i).visibility == 0:
-					while myHeader.strip() != header.strip() and num < self.workBook.sheet_by_index(i).ncols:						
+					while myHeader.replace(" ", "") != header.replace(" ", "") and num <= self.workBook.sheet_by_index(i).ncols:	
 						myHeader = self.workBook.sheet_by_index(i).col_values(num)[0]
 						num = num + 1
-					if num >= self.workBook.sheet_by_index(i).ncols:
+					if num > self.workBook.sheet_by_index(i).ncols:
 						statement = "invalid Workbook. Please check sheet "+ str(i+1) + " to make sure there is outflow data"
 						sys.exit(statement)
 					Outflow.append(self.workBook.sheet_by_index(i).col_values(num-1)[1:])
