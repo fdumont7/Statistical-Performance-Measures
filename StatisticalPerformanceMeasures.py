@@ -58,7 +58,7 @@ class StatisticalPerformanceMeasures:
 			Outflow = []
 			for i in range(self.workBook.nsheets):
 				if self.workBook.sheet_by_index(i).visibility == 0:
-					OO.extend(self.workBook.sheet_by_index(i).col_values(1)[1:])	
+					OO.append(self.workBook.sheet_by_index(i).col_values(1)[1:])	
 		else:
 			Outflow = []
 			myHeader = "none"
